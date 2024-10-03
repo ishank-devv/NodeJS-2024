@@ -3,6 +3,7 @@ console.log("Sum Module Executed");
 export var x = "hello sum";
 
 //wont work in ESM but will work in CJSff
+//ReferenceError: z is not defined - RUNNING IN STRICT MODE
 z = "Hello World";
 
 //new way to export when type is module

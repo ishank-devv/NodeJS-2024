@@ -1,7 +1,7 @@
 //importing
 // when explicit export was used
 // on multiple items
-// destructuring
+// and destructuring
 const { x, calculateSum } = require("./4sum.js");
 
 // var x = "100";//Error

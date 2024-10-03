@@ -7,6 +7,9 @@ console.log("Sum Module Executed");
 
 var x = "hello sum";
 
+z = "WORKING IN COMMON JS MODULE PATTERN";
+console.log(z);
+
 function calculateSum(a, b) {
   const sum = a + b;
   console.log(sum);
