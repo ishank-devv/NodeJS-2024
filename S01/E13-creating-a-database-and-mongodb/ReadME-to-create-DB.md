@@ -31,4 +31,4 @@ https://mongodb.github.io/node-mongodb-native/6.11/
 - Documents CRUD - Create, Read, Update, Delete
 
 Note:
-we use mongoose not mongodb library
+we will use mongoose in production not mongodb default library
