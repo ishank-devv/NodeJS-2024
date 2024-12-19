@@ -1,45 +1,27 @@
 const express = require("express");
 const app = express();
 
-// Advanced routing concepts
-// 1. /ab?c - means b is optional over here due to ?, means "ac" will work as well
-// /ac & /abc both will work
-app.get("/ab?c", (req, res) => {
-  res.send({ firstname: "ab?c", lastname: "Mehta" });
+//req.query  - userid=101 & password=testing
+// POSTMAN -http://localhost:3000/user?userid=101&password=testing
+app.get("/user", (req, res) => {
+  // Acceesing
+  console.log(req.query);
+  res.send({ firstname: "req.query", lastname: "Mehta" });
 });
 
-//bc is optional so /ad will work
-app.get("/a(bc)?d", (req, res) => {
-  res.send({ firstname: "a(bc)?d", lastname: "Mehta" });
+//req.params - : means its a Dynamic route
+// POSTMAN -http://localhost:3000/user/707
+app.get("/user/:userId", (req, res) => {
+  // Acceesing Params here
+  console.log(req.params);
+  res.send({ firstname: "req.params", lastname: "Mehta" });
 });
 
-// 2. /ab+c - means you can add as many b as you want to
-// /abc & /abbbbbbc will both work
-app.get("/ab+c", (req, res) => {
-  res.send({ firstname: "ab+c", lastname: "mehta" });
-});
-
-// /abcbcbcd will work
-app.get("/a(bc)+d", (req, res) => {
-  res.send({ firstname: "a(bc)+d", lastname: "mehta" });
-});
-
-// 3. /ab*cd - /ab(anythinginbetween)cd will work
-// /abcd & /abVARUNcd
-app.get("/ab*cd", (req, res) => {
-  res.send({ firstname: "abVARUNcd", lastname: "mehta" });
-});
-
-//4. if in the word, anywhere a letter is there it will work
-// /cab
-app.get(/a/, (req, res) => {
-  res.send({ firstname: "/a/", lastname: "mehta" });
-});
-
-//REGEX
-//5. /.*fly$/ - it wil work if anything starts with anything but surely ends with fly, dragonfly12 won't work
-app.get(/.*fly$/, (req, res) => {
-  res.send({ firstname: "endsWithFly", lastname: "mehta" });
+// POSTMAN - http://localhost:3000/user/707/varun/password
+app.get("/user/:userId/:name/:password", (req, res) => {
+  // Acceesing Params here
+  console.log(req.params);
+  res.send({ firstname: "req.params multiple", lastname: "Mehta" });
 });
 
 app.listen(3000, () => {
