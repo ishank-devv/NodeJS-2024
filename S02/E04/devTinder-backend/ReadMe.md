@@ -31,7 +31,3 @@ nodemon:to auto restart server after every change in code
 - npm i -g nodemon ( global installation)
   nodemon: to auto restart server
   command too run: nodemon src/app.js
-
-NOTE: IF YOU HAVE DELETED NODE MODULES, you can re-genrate using
-
-- npm install
