@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 
+//QUERY PARAMETERS
 //req.query  - userid=101 & password=testing
 // POSTMAN -http://localhost:3000/user?userid=101&password=testing
 app.get("/user", (req, res) => {
@@ -9,6 +10,7 @@ app.get("/user", (req, res) => {
   res.send({ firstname: "req.query", lastname: "Mehta" });
 });
 
+//ROUTE PARAMETERS
 //req.params - : means its a Dynamic route
 // POSTMAN -http://localhost:3000/user/707
 app.get("/user/:userId", (req, res) => {
