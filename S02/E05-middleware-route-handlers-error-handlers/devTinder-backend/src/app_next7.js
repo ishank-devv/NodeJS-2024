@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-// ADDING MULTIPLE FUNCTIONS
+// ADDING MULTIPLE FUNCTIONS - this will work in app.use, app.get, app.post etc
 // All will give the same response - working is same
 // app.use("/route", rh1,rh2,rh3,rh4,rh5)
 // app.use("/route", [rh1,rh2,rh3,rh4,rh5])
