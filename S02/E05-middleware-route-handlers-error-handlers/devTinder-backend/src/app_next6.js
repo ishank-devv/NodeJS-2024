@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 
+//INFINITE LOOP
 // Corner Case 2: what will happen if you remove response & next from from 4th handler
 app.use(
   "/user",
@@ -31,6 +32,7 @@ app.listen(3000, () => {
   console.log("Server is successfully listening on port 3000...");
 });
 
+// INFINITE LOOP
 // output: in postman
 // THERE IS NO WRROR BUT IT WILL HANG
 // because we're not handling in either of route handlers with a proper response back
