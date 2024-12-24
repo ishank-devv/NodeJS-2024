@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 // ORDER MATTERS- dont write app.use on top as it will be excuted first in place of GET POST & DELETE
+// can handle any type of method GET,POST,DELETE etc
 // app.use("/user", (req, res) => {
 //   res.send("HAHAHAHA");
 // });
