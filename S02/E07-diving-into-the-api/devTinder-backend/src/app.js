@@ -1,5 +1,4 @@
-//SIGNUP API- Dynamically Handling JSON data( without hard coding) - receiving data from postman
-
+// Creating GET api - feed api( get all users from the database)
 const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
@@ -12,14 +11,87 @@ app.use(express.json());
 app.post("/signup", async (req, res) => {
   // First, we'll have to create new instance of User model & pass the data which you recevied from api( POST)
   const user = new User(req.body);
-
-  // NOTE: always do DB operation in try catch block
   try {
     // this will save data in users collection on DB, this funct returns you a promise( most mongoose functions does)
     await user.save();
     res.send("User Added successfully!");
   } catch (err) {
     res.status(400).send("Error saving the user:" + err.message);
+  }
+});
+
+// GET all users/one user with this email id -
+// INPUT
+// http://localhost:3000/user
+//{
+// "emailId": "aakash@gupta.com"
+//}
+// OUTPUT:
+//[
+//     {
+//         "_id": "677814c7fb995334c18c4276",
+//         "firstName": "Aakash",
+//         "lastName": "Gupta",
+//         "emailId": "aakash@gupta.com",
+//         "password": "aakash@123",
+//         "__v": 0
+//     }
+// ]
+app.get("/user", async (req, res) => {
+  const userEmail = req.body.emailId;
+  try {
+    // users - array of users with the particular emailId ( could be one or two )
+    const users = await User.find({ emailId: userEmail });
+    if (users.length === 0) {
+      res.status(404).send("User not found!");
+    } else {
+      res.send(users);
+    }
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+// what if there were 2 users with the same email id, and we only get one( the oldest document)
+app.get("/oneUser", async (req, res) => {
+  const userEmail = req.body.emailId;
+  try {
+    // users - array of users with the particular emailId ( could be one or two )
+    const oneUser = await User.findOne({ emailId: userEmail });
+    if (!oneUser) {
+      res.status(404).send("User not found!");
+    } else {
+      res.send(oneUser);
+    }
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+// Creating GET api - feed api( get all users from the database)- ie. get all documents/rows
+app.get("/feed", async (req, res) => {
+  try {
+    // empty filter will get you all the documents
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+// findById- returns the data matching the id
+app.get("/user/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send("User not found!");
+    }
+  } catch {
+    res.status(400).send("Something went wrong");
   }
 });
 
