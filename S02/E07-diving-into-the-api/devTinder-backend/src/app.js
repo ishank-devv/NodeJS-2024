@@ -95,6 +95,65 @@ app.get("/user/:id", async (req, res) => {
   }
 });
 
+// findByIdAndDelete( user Delete in postman ) - delete a user from the DB
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const user = await User.findByIdAndDelete({ _id: userId });
+    // const user = await User.findByIdAndDelete(userId);
+    if (user) {
+      res.send("User deleted sucessfully");
+    } else {
+      res.status(404).send("User not found!");
+    }
+  } catch (error) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+//update data of the user by id- user patch in postman
+// findByIdAndUpdate(id, ...) is equivalent to & using bts findOneAndUpdate({ _id: id }, ...)
+// NOTE1: findOneAndUpdate({ _id: id }, ...) can also use emaildId to search for the user
+// NOTE2: userId field inside the data should create a new field in our scema but it won't happen because
+// it(userId or skills) is not present in schema so it won't be added to database
+// any other date which is not part of your schema will be ignored by apis
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
+  try {
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+    });
+    console.log(user);
+    if (user) {
+      res.send("User updated sucessfully");
+    } else {
+      res.status(404).send("User not found!");
+    }
+  } catch (error) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+// findOneAndUpdate- update by email
+app.patch("/userEmail", async (req, res) => {
+  const email = req.body.emailId;
+  const data = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ emailId: email }, data, {
+      returnDocument: "after",
+    });
+    console.log(user);
+    if (user) {
+      res.send("User updated sucessfully");
+    } else {
+      res.status(404).send("User not found!");
+    }
+  } catch (error) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
 connectDB()
   .then(() => {
     console.log("Database cluster & DB connection established...");
