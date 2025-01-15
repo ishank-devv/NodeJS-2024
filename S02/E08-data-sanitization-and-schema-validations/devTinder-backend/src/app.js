@@ -117,10 +117,33 @@ app.delete("/user", async (req, res) => {
 // NOTE2: userId field inside the data should create a new field in our scema but it won't happen because
 // it(userId or skills) is not present in schema so it won't be added to database
 // any other date which is not part of your schema will be ignored by apis
-app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  // const userId = req.body.userId;
+  const userId = req.params?.userId;
   const data = req.body;
+  //   {
+  //     "userId": "678799519ad8b4f9bea930df",
+  //     "emailId": "deepika@gmail.com",
+  //     "gender":"female",
+  //     "skills": ["javascript","drama","acting"],
+  //     "xyz": "skhshsnrandom"
+
+  // }
   try {
+    //DATA SANITIZATION - API level validations
+    // If user is sending random things like "xyz" in data, then update won't be  allowed.
+    const ALLOWED_UPDATE = ["photoUrl", "about", "skills", "gender", "age"];
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+      ALLOWED_UPDATE.includes(k)
+    );
+    if (!isUpdateAllowed) {
+      throw new Error("Update not allowed");
+    }
+    if (data.skills.length > 10) {
+      throw new Error("Skills cannot be more than 10");
+    }
+
+    //Logic
     const user = await User.findByIdAndUpdate({ _id: userId }, data, {
       returnDocument: "after",
       // if this is true, then only validate() inside gender of user.js will run
