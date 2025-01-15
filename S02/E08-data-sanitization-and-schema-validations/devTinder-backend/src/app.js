@@ -120,6 +120,7 @@ app.delete("/user", async (req, res) => {
 app.patch("/user/:userId", async (req, res) => {
   // const userId = req.body.userId;
   const userId = req.params?.userId;
+  //NEVER TRUST req.body
   const data = req.body;
   //   {
   //     "userId": "678799519ad8b4f9bea930df",
