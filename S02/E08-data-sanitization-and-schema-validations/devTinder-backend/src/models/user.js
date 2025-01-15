@@ -2,6 +2,7 @@
 // Each schema maps to a MongoDB collection and defines the shape of the documents within that collection.
 
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 // Legit field present inside the user collection
 // creating schema for user
@@ -27,12 +28,23 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      //using NPM validator here in schema level validation
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Invalid Email Address:  " + value);
+        }
+      },
     },
     password: {
       type: String,
       required: true,
       minLength: 4,
-      maxLength: 10,
+      maxLength: 20,
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error("Enter a Strong password:  " + value);
+        }
+      },
     },
     age: {
       type: Number,
@@ -60,6 +72,12 @@ const userSchema = new mongoose.Schema(
       default:
         "https://www.pnrao.com/wp-content/uploads/2023/06/dummy-user-male.jpg",
       trim: true,
+      //using NPM validator here in schema level validation
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid Photo Url :  " + value);
+        }
+      },
     },
     about: {
       type: String,

@@ -52,3 +52,9 @@ S02Ep06
 // and import it in app.js( line 2 ) & call connectDB before app.listen
 
 SCHEMA- create inside a models
+
+S02E08
+npm validator library- can be used to do validations at schema level
+& Sanitization(api level validation)
+
+- npm i validator
