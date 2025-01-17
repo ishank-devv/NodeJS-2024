@@ -7,10 +7,13 @@ const { validateSignUpData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const { validateLogin } = require("./utils/validatorLogin");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 // Middleware to read JSON & convert it into JS object & adds this JS obj back to req in the body( ie req.body )
 // will work for all the routes
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup", async (req, res) => {
   try {
@@ -62,12 +65,56 @@ app.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isPasswordValid) {
+      //If pass is valid, Create a JWT token
+      // Hiding ({payload}, secretkey) inside jwt with default (HMAC SHA256) ALGO
+      const token = jwt.sign({ _id: user._id }, "Dev@node@321");
+      // console.log(token);
+
+      //Add the token to cookie & send the response back to user(user is already authenticated if this is happening)
+      //Manually adding token to the cookie
+      // res.cookie("token", "hgabshjwttoken");
+      // Adding JWT token to the cookie
+      res.cookie("token", token);
       res.send("Login Successful! ");
     } else {
       throw new Error("Password is not correct!");
     }
   } catch (err) {
     res.status(400).send("Error saving the user:" + err.message);
+  }
+});
+
+// Get the user info  who has logged in, current JWT stored in cookies
+// if JWT of Akash is present in cookie, then data of only Akash will be displayed.
+// if JWT of Elon is present in cookie, then data of only Elon will be displayed.
+app.get("/profile", async (req, res) => {
+  try {
+    const cookies = req.cookies;
+    const { token } = cookies;
+    if (!token) {
+      throw new Error(
+        "Invalid Token/token not present inside cookie, login again!"
+      );
+    }
+
+    //validation of token( if token is fake or if it has expired or not)
+    const decodedMessage = await jwt.verify(token, "Dev@node@321");
+    const { _id } = decodedMessage;
+    // console.log("Logged in user is: " + _id);
+
+    // console.log(cookies);
+    // undefined when cookie-parse is not used
+    // { token: 'hgabshjwttoken' } when cookie-parse is used
+    // [Object: null prototype] {} when cookie/JWT is removed
+
+    // res.send("Reading Cookie");
+    const user = await User.findById({ _id: _id });
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("Error accessing the cookie:" + err.message);
   }
 });
 

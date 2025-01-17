@@ -59,7 +59,7 @@ npm validator library- can be used to do validations at schema level
 
 - npm i validator
 
-S0209
+S02E09
 
 - passwords should be stored in hashed format/encrypted format
   First thing should be done during /signup:
@@ -71,3 +71,24 @@ S0209
 To encrypt/hash passwords & also validate your passwords
 
 - npm i bcrypt
+
+S02E10
+
+- there are certain APIs which can be accessed only after the authentication/logged in.
+- COOKIE: when you're loggin in an application & calling a login API, then server validates( email & password ) & then authenticates & sends back a response along with JWT token inside the COOKIE. Then browser will store that cookie, whenever user is making any(like, comment, post, patch) API call, browser will send that cookie along with request, then this cookie will validated & proper response(data etc) will send back to browser.
+- Suppose after sometime, On every API call, this cookie(JWT token) will be validated.
+- EXPIRY: we can set expiry date of JWT token to any time( 1D, 1W, 1M etc)
+- AUTHENTICATION/VALIDATION FAILED: When JWT token is expired & you're making an API call, then it won't work & you'll have to login again.
+
+cookie-parser: is used to read cookies
+
+- npm i cookie-parser
+
+JWT: JSON wen token, is JSON Object which is used to securely transfer information over the web(between two parties).
+
+- npm i jsonwebtoken
+  It is made of 3 parts:
+
+1. Header
+2. Payload/data
+3. Signature
