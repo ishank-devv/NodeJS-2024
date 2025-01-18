@@ -92,3 +92,5 @@ JWT: JSON wen token, is JSON Object which is used to securely transfer informati
 1. Header
 2. Payload/data
 3. Signature
+
+- Auth Middleware: is needed because we want all( except /signin & /login) the APIs to work after authentication
