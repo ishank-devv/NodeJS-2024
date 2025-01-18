@@ -77,7 +77,9 @@ S02E10
 - there are certain APIs which can be accessed only after the authentication/logged in.
 - COOKIE: when you're loggin in an application & calling a login API, then server validates( email & password ) & then authenticates & sends back a response along with JWT token inside the COOKIE. Then browser will store that cookie, whenever user is making any(like, comment, post, patch) API call, browser will send that cookie along with request, then this cookie will validated & proper response(data etc) will send back to browser.
 - Suppose after sometime, On every API call, this cookie(JWT token) will be validated.
-- EXPIRY: we can set expiry date of JWT token to any time( 1D, 1W, 1M etc)
+- cookie EXPIRE: you can also expire your cookies which holds JWT token & other things
+- EXPIRY: we can set expiry date of JWT token to any time( 0d,1d, 1w, 1m etc)
+- 0d: expires immediatly once the token is created
 - AUTHENTICATION/VALIDATION FAILED: When JWT token is expired & you're making an API call, then it won't work & you'll have to login again.
 
 cookie-parser: is used to read cookies
@@ -93,4 +95,4 @@ JWT: JSON wen token, is JSON Object which is used to securely transfer informati
 2. Payload/data
 3. Signature
 
-- Auth Middleware: is needed because we want all( except /signin & /login) the APIs to work after authentication
+- Auth Middleware(userAuth): is needed because we want all( except /signin & /login) the APIs to work after authentication
