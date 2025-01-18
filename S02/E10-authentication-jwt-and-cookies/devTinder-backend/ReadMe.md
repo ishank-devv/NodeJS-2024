@@ -96,3 +96,5 @@ JWT: JSON wen token, is JSON Object which is used to securely transfer informati
 3. Signature
 
 - Auth Middleware(userAuth): is needed because we want all( except /signin & /login) the APIs to work after authentication
+- use userSchema methods in user.js to generate jwt token & bcrypt.compare instead in app.js, as it is re-usable, testable etc
+- if this is being used to point to the instance of user, then avoid using arrow function as this doesn't work well with arrow function. where user/this can be Akash or Elon

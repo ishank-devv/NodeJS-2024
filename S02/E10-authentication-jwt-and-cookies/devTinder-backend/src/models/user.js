@@ -3,6 +3,8 @@
 
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // Legit field present inside the user collection
 // creating schema for user
@@ -91,6 +93,30 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// usingSchema.methods & generating token where User model is instead in app.js
+// don't use arrow function here because this & arrow function don't work best together
+userSchema.methods.getJWT = async function () {
+  const user = this;
+
+  const token = jwt.sign({ _id: user._id }, "Dev@node@321", {
+    expiresIn: "7d",
+  });
+
+  return token;
+};
+
+userSchema.methods.comparePassword = async function (passwordInputByUser) {
+  const user = this;
+  const passwordhash = user.password;
+
+  const isPasswordValid = await bcrypt.compare(
+    passwordInputByUser,
+    passwordhash
+  );
+
+  return isPasswordValid;
+};
 
 // creating a model for user
 // (nameofmodel, schema)

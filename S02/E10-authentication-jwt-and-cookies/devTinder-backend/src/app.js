@@ -51,6 +51,7 @@ app.post("/signup", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
+    // login details entered by user
     const { emailId, password } = req.body;
 
     //validate Login data(utils)
@@ -63,14 +64,19 @@ app.post("/login", async (req, res) => {
     }
 
     // If user is present then comparing (myPlaintextPassword(getting while user is login), passwordhash(saved in db))
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    // Making helper function inside user.js file using user schema methods & offloading it there
+    // const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.comparePassword(password);
 
     if (isPasswordValid) {
       //If pass is valid, Create a JWT token
       // Hiding ({payload}, secretkey,{expiry}) inside jwt with default (HMAC SHA256) ALGO
-      const token = jwt.sign({ _id: user._id }, "Dev@node@321", {
-        expiresIn: "7d",
-      });
+      // Making helper function inside user.js file using user schema methods & offloading it there
+      //   const token = jwt.sign({ _id: user._id }, "Dev@node@321", {
+      //     expiresIn: "7d",
+      //   });
+      //user here is Akash or Elon
+      const token = await user.getJWT();
       // console.log(token);
 
       //Add the token to cookie & send the response back to user(user is already authenticated if this is happening)
