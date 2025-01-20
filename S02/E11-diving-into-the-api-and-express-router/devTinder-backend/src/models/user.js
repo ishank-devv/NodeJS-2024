@@ -94,7 +94,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// usingSchema.methods & generating token where User model is instead in app.js
+// usingSchema.methods & generating token where User model is at the time& place of generating new instance of user instead in app.js
 // don't use arrow function here because this & arrow function don't work best together
 userSchema.methods.getJWT = async function () {
   const user = this;
