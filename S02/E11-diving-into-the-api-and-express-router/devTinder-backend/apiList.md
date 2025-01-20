@@ -10,7 +10,7 @@
 
 - GET /profile/view
 - PATCH /profile/edit
-- PATCH /password/password
+- PATCH /profile/password
 
 ## connectionRequestRouter
 
