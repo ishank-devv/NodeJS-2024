@@ -62,12 +62,18 @@ const userSchema = new mongoose.Schema(
       // this validate funct will be only called by default when new document/row is being inserted(ie signup) ,
       // not while doing patch/update the document/row
       // to enable this validate while patch/update you need to do runValidators: true, in options of User.findByIdAndUpdate
-      validate(value) {
-        if (!["male", "female", "other"].includes(value)) {
-          throw new Error(
-            "Gender data is not valid! It could be male, female ,  other"
-          );
-        }
+      // validate(value) {
+      //   if (!["male", "female", "other"].includes(value)) {
+      //     throw new Error(
+      //       "Gender data is not valid! It could be male, female ,  other"
+      //     );
+      //   }
+      // },
+
+      // Validation using enum
+      enum: {
+        values: ["male", "female", "other"],
+        message: `{VALUE} is not a valid gender type`,
       },
     },
     photoUrl: {
@@ -117,6 +123,13 @@ userSchema.methods.comparePassword = async function (passwordInputByUser) {
 
   return isPasswordValid;
 };
+
+//COMPOUND INDEX for firstName, lastname
+// userSchema.index({ firstName: 1, lastName: 1 });
+// When you put compund index like this, queries like below becomes very fast
+// User.find({ firstName: "Elon", lastName: "Musk" });
+// OTHER COMPOUND INDEXES
+//
 
 // creating a model for user
 // (nameofmodel, schema)

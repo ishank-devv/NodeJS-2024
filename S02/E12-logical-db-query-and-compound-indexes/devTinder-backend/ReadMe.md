@@ -102,3 +102,47 @@ JWT: JSON wen token, is JSON Object which is used to securely transfer informati
 S02E11
 
 - use express.router() to handle( grouped & manage apis effieciently) routing in a proper way
+
+S02E12
+
+- two entities(userSchema) has its own schema, and relationship(connection) between them should have its own schema ie. connectionRequestSchema
+
+- similar to schemaMethods in episode S02E10, we can create schema level Validation using mongoose schema pre for checking/validating (3. you can't send request to yourself as well)
+- If any pre hook errors out, mongoose will not execute subsequent middleware or the hooked function. Mongoose will instead pass an error to the callback and/or reject the returned promise. There are several ways to report an error in middleware( DONT USE ARROY FUNCTION)
+- pre is like a middleware and will be called everytime the connection request gets save in DB ie when save() method will be called ie. await connectionRequest.save();
+- connectionSchema.pre("save", function(){}), where save is like a event/eventhandler- ie. before save() , pre will be called
+- since it is kind of like middleware, so pass next() as well
+
+- putting index in DB because
+- Imagine a scenario where 1000 people are in DB
+- Suppose every person is sending 100 connection request( 1000 x 100 entries in connectionrequests collection/table)
+- Query(User.findOne) operation becomes expensive as collection/table grows( 1000 x 100 ) or in case of million of users
+- <!-- - eg: await  ConnectionRequestModel.findOne({
+  //mongoose/mongodb OR
+  $or: [
+  //Conditions
+  { fromUserId, toUserId },
+  { fromUserId: toUserId, toUserId: fromUserId },
+  ],
+  }); -->
+<!--
+  or
+  findByName etc -->
+- to handle this situation you need indexes in DB
+- Indexing DB makes API faster
+- putting index on emailId as this is what we're doing for long time
+- NOTE: if you're making any field(eg:emailID) unique, then mongoDB automatically creates index for that
+  ![alt text](image.png)
+- other way- index, unique, sparse: true
+- since we're quering using both fromUserId and toUserId, we need to index them both ie. COMPOUND INDEX
+- COUMPOUND INDEX eg- connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
+  ![alt text](image-1.png)
+- Creating indexes unnecessarly also comes at a cost, so be mindful about it.
+- Indexes implementation is different in MongoDB & SQL
+- Advantage of creating index
+- Disadvantage of creating lot of index
+- Logical Queries
+  ![alt text](image-2.png)
+- Comparision Queries
+  ![alt text](image-3.png)
+- ALWAYS THINK ABOUT CORNER CASES WHILE CREATING API

@@ -66,14 +66,15 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
 
 profileRouter.patch("/profile/password", userAuth, async (req, res) => {
   try {
+    const loggedInUser = req.user;
+    // if (loggedInUser.password === req.body.password) {
+    //   throw new Error(
+    //     "Operation failed! this is your current password, try different!"
+    //   );
+    // }
+
     if (!validateEditPasswordData) {
       throw new Error("Invalid password edit request");
-    }
-    const loggedInUser = req.user;
-    if (loggedInUser.password === req.body.password) {
-      throw new Error(
-        "Operation failed! this is your current password, try different!"
-      );
     }
 
     // console.log(loggedInUser.password);
