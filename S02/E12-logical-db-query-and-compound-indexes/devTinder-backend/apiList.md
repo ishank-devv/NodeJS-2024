@@ -19,7 +19,7 @@
 
 MAKING STATUS(interested/ignored dynamic)
 
-- 1(a+b) POST /request/:status/:toUserId
+- 1(a+b) POST /request/send:status/:toUserId
 
 - POST /request/review/accepted/:requestId
 - POST /request/review/rejected/:requestId
