@@ -5,6 +5,7 @@ const { userAuth } = require("../middlewares/auth");
 const ConnectionRequestModel = require("../models/connectionRequest");
 const User = require("../models/user");
 
+//1ST SWIPE- only fromUserId will be able to send ( only "ignored", "interested" will be allowed )
 requestRouter.post(
   "/request/send/:status/:toUserId",
   userAuth,
@@ -64,6 +65,47 @@ requestRouter.post(
           req.user.firstName + " is " + status + " in " + toUser.firstName,
         data,
       });
+    } catch (err) {
+      res.status(400).send("ERROR: " + err.message);
+    }
+  }
+);
+
+// 2ND SWIPE- only toUserId should be able to accepted/rejected the request( requestId is newly made ID made by above api in DB )
+requestRouter.post(
+  "/request/review/:status/:requestId",
+  userAuth,
+  async (req, res) => {
+    //Akash => Elon
+    try {
+      const loggedInUser = req.user;
+      const { status, requestId } = req.params;
+
+      //Validate the status
+      const allowedStatus = ["accepted", "rejected"];
+      if (!allowedStatus.includes(status)) {
+        return res.status(400).json({ message: "Status not allowed!" });
+      }
+
+      //check if 1.requestId is present in DB or not, 2.toUserId == loggedInUser._id(Elon), 3. status == "interested"
+      const connectionRequest = await ConnectionRequestModel.findOne({
+        _id: requestId,
+        toUserId: loggedInUser._id,
+        status: "interested",
+      });
+      if (!connectionRequest) {
+        return res
+          .status(404)
+          .json({ message: "Connection request not found!" });
+      }
+
+      // If all above checks passed, Replacing "interested" with either "accepted", "rejected"
+      connectionRequest.status = status;
+
+      //saving in db
+      const data = await connectionRequest.save();
+
+      res.json({ message: "Connection request " + status, data });
     } catch (err) {
       res.status(400).send("ERROR: " + err.message);
     }

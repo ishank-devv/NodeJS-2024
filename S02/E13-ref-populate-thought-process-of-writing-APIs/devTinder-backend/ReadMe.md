@@ -146,3 +146,30 @@ S02E12
 - Comparision Queries
   ![alt text](image-3.png)
 - ALWAYS THINK ABOUT CORNER CASES WHILE CREATING API
+
+S02E13
+
+- Akash => Elon(fromUserId => toUserId) - a connection request was sent using POST /request/send/:status/:toUserId
+- "/request/review/:status/:requestId" WHILE CREATING THIS API
+- Remember that loggedIn user should matching toUserId, then only this API should work
+- only toUserId should be able to accepted/rejected the request
+- accepted/rejected can only happen if status of POST /request/send/:status/:toUserId is "interested"
+- ( if the status is "ignored" then it can't be accepted or rejected)
+- requestId should be valid/ present in our DB
+- requestId
+  ![alt text](image-4.png)
+
+- Thought process of POST api is very different from GET api
+- POST- saving data into DB
+- How can a attacker exploit POST api ?
+- By sending some random data into API & mistakingly saving data in DB
+- GET- fetching data from DB
+- we'll make sure that we'll only send allowed data to user/attacker ie. whoever has logged in can only
+- get data related to his/her logged in ID ( which is allowed in his/her scope)
+- Avoid Data leaks
+
+- BUILDING RELATION BEWTWEEN TWO COLLECTION/TABLE[ users(User)& connectionrequets(ConnectionRequest)]
+- 1. by creating a reference between them using "ref"( ref: "User") in connectionRequest.js under fromUserId
+- 2. .populate("fromUserId") - TO POPULATE ALL THE DATA OR .populate("fromUserId",["firstName","lastName"]) -TO POPULATE SPECIFIC DATA in routes/user.js UNDER /user/requests/received API
+- NOTE: using "ref" and "populate", we're basically joining two collection/table like we used to do in SQL
+- mongoose IDs don't get compared with ===..... use toString() OR fromUserId.equals(toUserId)
