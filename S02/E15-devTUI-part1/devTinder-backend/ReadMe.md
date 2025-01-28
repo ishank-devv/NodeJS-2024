@@ -211,3 +211,4 @@ S02E14
 - query /feed?page=1
 
 S02E15
+check readme under devTinder-frontend
