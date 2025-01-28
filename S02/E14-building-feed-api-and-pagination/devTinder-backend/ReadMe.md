@@ -173,3 +173,39 @@ S02E13
 - 2. .populate("fromUserId") - TO POPULATE ALL THE DATA OR .populate("fromUserId",["firstName","lastName"]) -TO POPULATE SPECIFIC DATA in routes/user.js UNDER /user/requests/received API
 - NOTE: using "ref" and "populate", we're basically joining two collection/table like we used to do in SQL
 - mongoose IDs don't get compared with ===..... use toString() OR fromUserId.equals(toUserId)
+
+S02E14
+
+- user should see all the cards except:
+- 1. His own card
+- 2. His connections / he accepted/ he got rejected (connection status: "accepted")
+- 3. He rejected / He got rejected (connection status: "rejected")
+- 4. He Ignored people / He got Ignored by People (connection status: "ignored")
+- 5. He already sent the connection request / He already received connection request (connection status: "interested")
+
+- [Rahul, Akash, Elon, Mark, Donald, MS Dhoni, Virat]
+- Example: What Rahul will see in his feed(array)
+- Rahul -> Akash -> "rejected", Rahul -> Elon ->"accepted"
+- Rahul = [Mark, Donald, MS Dhoni, Virat]
+- Elon = [ Akash, Mark, Donald, MS Dhoni, Virat]
+- Akash = [ Elon, Mark, Donald, MS Dhoni, Virat]
+- Virat = [Rahul, Akash, Elon, Mark, Donald, MS Dhoni]
+
+- set datastructure is like an array which only contains unique elements & it will skip any duplicate if you try to push
+
+- using comparison query in mongoDB
+- $ne: Matches all values that are not equal to a specified value.
+- $nin: Matches none of the values specified in an array.
+
+- Pagination:
+- /feed?page=1&limit=10 => 1-10 ie. .skip(0) & .limit(10)
+- /feed?page=2&limit=10 => 11-20 ie. .skip(10) & .limit(10)
+- /feed?page=3&limit=10 => 21-30 ie. .skip(20) & .limit(10)
+
+- skip formula = (page-1)xlimit
+
+- .skip() -how many documents you skip from the starting
+- .limit() -how many documents we want
+
+- params /feed/:page
+- query /feed?page=1
