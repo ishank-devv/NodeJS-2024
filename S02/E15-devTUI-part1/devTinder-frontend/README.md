@@ -1,12 +1,5 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
 S02E15
 
 - /S02/E15-devTUI-part1
@@ -23,8 +16,31 @@ S02E15
 - main.jsx is primary entry point of your frontend application
 - And inside main.jsx(main entry point), we're just rendering our app
 - Inside app.jsx, we'll build everything.
-- remove everything extra in
-  App.jsx
+- Remove everything extra in
+  - App.jsx
 - Delete
-  src/App.css
-  src/assets folder
+  - src/App.css
+  - src/assets folder
+- Design CSSframework/Library we'll be using
+  - Old Tailwindcss
+    - follow steps here https://v3.tailwindcss.com/docs/installation
+    - npm install -D tailwindcss@3
+    - npx tailwindcss init
+    - follow steps to debug https://chatgpt.com/share/679a1ced-63c4-8005-91cd-93185c91fb71
+    - npm install tailwindcss postcss autoprefixer daisyui
+    - create postcss.config.js & put configurations here
+    - export default {
+      plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+      },
+      };
+  - OR CSSFramework: New TailwindCSS
+    - Follow steps to install https://tailwindcss.com/docs/installation/using-vite
+    - npm install tailwindcss postcss autoprefixer daisyui
+    - npx tailwindcss init -p
+    - use className instead of class <div className="text-red-500">Hello World</div>
+  - Design compoenent library: Daisy UI (compatible with tailwind )
+    - npm i -D daisyui@latest
+    - https://daisyui.com/docs/install/ ( follow steps )
+    - try changing the theme of Daisy UI, and see if it works
