@@ -62,6 +62,8 @@ S02E15
 
 Starting again
 
+S02E15
+
 # INSTALL VITE (https://vite.dev/guide/ )
 
 - npm create vite@latest devTinder-frontend -- --template react
@@ -115,4 +117,4 @@ Reference: https://daisyui.com/docs/install/
 - npm i -D daisyui@latest
 - import to your main css file ie. index.css
   - @plugin "daisyui";
-- try changing the theme of Daisy UI, and see if it works
+- try adding navbar component to App.jsx and change background color to bg-base-300
