@@ -80,10 +80,10 @@ Starting again
     - src/App.css
     - src/assets folder
 
-# Install tailwind via npm(
+# Install tailwind via npm
 
 Reference 1: https://www.youtube.com/watch?v=sHnG8tIYMB4
-Reference 2: https://tailwindcss.com/docs/installation/using-vite )
+Reference 2: https://tailwindcss.com/docs/installation/using-vite
 
 - npm install tailwindcss @tailwindcss/vite
 - configure vite.config.ts
@@ -98,7 +98,7 @@ Reference 2: https://tailwindcss.com/docs/installation/using-vite )
 
 # how to handle vite localhost error when running npm run dev
 
-( reference: https://chatgpt.com/share/67c829dc-37e4-8005-be5e-8ce051658c62 )
+Reference: https://chatgpt.com/share/67c829dc-37e4-8005-be5e-8ce051658c62
 
 1. Manually Set localhost in Your Hosts File
    1. Open Terminal and edit the hosts file:
@@ -107,8 +107,12 @@ Reference 2: https://tailwindcss.com/docs/installation/using-vite )
    127.0.0.1 localhost
 3. Save and exit (Ctrl + X, then Y, then Enter).
 
-# Design compoenent library: Daisy UI (compatible with tailwind )
+# Install design compoenent library: Daisy UI (compatible with tailwind )
 
-    - npm i -D daisyui@latest
-    - https://daisyui.com/docs/install/ ( follow steps )
-    - try changing the theme of Daisy UI, and see if it works
+Reference: https://daisyui.com/docs/install/
+
+- https://daisyui.com/docs/install/ ( follow steps )
+- npm i -D daisyui@latest
+- import to your main css file ie. index.css
+  - @plugin "daisyui";
+- try changing the theme of Daisy UI, and see if it works
