@@ -62,7 +62,8 @@ S02E15
 
 Starting again
 
-- INSTALL VITE (https://vite.dev/guide/
+# INSTALL VITE (https://vite.dev/guide/ )
+
 - npm create vite@latest devTinder-frontend -- --template react
 
   - cd devTinder-frontend
@@ -79,19 +80,21 @@ Starting again
     - src/App.css
     - src/assets folder
 
-- Install tailwind via npm(
-  Reference 1: https://www.youtube.com/watch?v=sHnG8tIYMB4
-  Reference 2: https://tailwindcss.com/docs/installation/using-vite )
-  - npm install tailwindcss @tailwindcss/vite
-  - configure vite.config.ts
-    - import tailwindcss from '@tailwindcss/vite'
-    - plugins: [
-      tailwindcss(),
-      ],
-  - import tailwind to your main css file ie. src/index.css
-    - @import "tailwindcss";
-  - Run your build process with npm run dev or whatever command configured in your package.json file.
-  - <h1 className="text-red-500"> Vite + React<h1>
+# Install tailwind via npm(
+
+Reference 1: https://www.youtube.com/watch?v=sHnG8tIYMB4
+Reference 2: https://tailwindcss.com/docs/installation/using-vite )
+
+- npm install tailwindcss @tailwindcss/vite
+- configure vite.config.ts
+  - import tailwindcss from '@tailwindcss/vite'
+  - plugins: [
+    tailwindcss(),
+    ],
+- import tailwind to your main css file ie. src/index.css
+  - @import "tailwindcss";
+- Run your build process with npm run dev or whatever command configured in your package.json file.
+- <h1 className="text-red-500"> Vite + React<h1>
 
 # how to handle vite localhost error when running npm run dev
 
