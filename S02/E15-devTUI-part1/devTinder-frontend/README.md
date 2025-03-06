@@ -64,7 +64,10 @@ Starting again
 
 S02E15
 
-# INSTALL VITE (https://vite.dev/guide/ )
+# INSTALL VITE
+
+Reference 1: https://www.youtube.com/watch?v=sHnG8tIYMB4
+Reference 2: https://vite.dev/guide/
 
 - npm create vite@latest devTinder-frontend -- --template react
 
@@ -118,3 +121,45 @@ Reference: https://daisyui.com/docs/install/
 - import to your main css file ie. index.css
   - @plugin "daisyui";
 - try adding navbar component to App.jsx and change background color to bg-base-300
+
+# Notes
+
+- use rafce to create seperate NavBar.jsx component ( ReactArrowFunctionExportComponent)
+- add NavBar.jsx to App.jsx
+- here we're using "es modules" for import and export( in nodejs we were using require() ie. "common JS modules" )
+- using react router package to add routing
+  - npm i react-router-dom
+  - creating routing using Router Components at root level ie. App.jsx https://reactrouter.com/6.28.0/router-components/browser-router
+    - Add <BrowserRouter></BrowserRouter> to App.jsx
+    - <BrowserRouter basename="/"></BrowserRouter> , basename="/api" means /api will be added automatically before every route url
+    - Inside BrowserRouter Add <Routes></Routes>, basically Routes is like a wrapper for different routes
+    - Inside Routes, create <Route path="/" element={<BodyComponent/>}> , element will decide what will render on this path
+    - NOTE1: createBrowserRouter also takes path and element but in the form of array of objects
+    - NOTE2: Here we're using in form of nested route inside like this <BrowserRouter basename="/">
+      <Routes>
+      <Route path="/" element={<div>Base page</div>} />
+      <Route path="/login" element={<div>Login page</div>} />
+      </Routes>
+      <BrowserRouter>
+
+# Component Design
+
+- Body
+  - NavBar
+  - Route=/ => Feed
+  - Route=/login => Login
+  - Route=/connection => Connections
+  - Route=/profile => Profile
+
+# Notes Continue
+
+- NavBar should be inside <Body/> component
+- <Route path="/" element={<Body />} />, <Route path="/" element={<Body />} ></Route>
+- 1st and 2nd , both are same. But in the 2nd one we can create nested route
+- Created nested route, Login.jsx and Profile.jsx inside <Body/> component
+- Render these children <Login/> and <Profile/> inside <Body/> in an <Outlet/>
+- Outlet inside <body/> rendering like this means any children routes of <Body/> will render over here inside body return (<div>
+<Outlet>
+</div>)
+
+- create a Footer.jsx
