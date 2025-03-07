@@ -163,3 +163,84 @@ Reference: https://daisyui.com/docs/install/
 </div>)
 
 - create a Footer.jsx
+
+# S02E16
+
+## Notes Continue
+
+- Create a Login Page using daisyUi basic "card with no image"
+  - binding state variable with UI component ( input )
+- will be using axios to make api/network call
+  - npm i axios
+- CORS error happens when your client is at different url and backend is at diff url because of security reasons
+  - frontend: http://localhost:5173
+  - backend: http://localhost:3000
+  - 127.0.0.1 === localhost
+  - localhost is same for both but
+  - but frontend is using different port ie. 5173
+  - and backend is using different port ie. 3000
+- Handling this CORS error at API level in backend, cors is middleware here
+  - install this package in backend app
+  - npm install cors
+  - add this middleware to app.js with configurations(below)
+
+# Why cookies are not saving up in browser( devconcole=> application => cookies unlike in postman cookies were saving the login JWT)
+
+- because if you're in unsecure network( not on same domain), not using https, browser does not allow cookies to be set inside your browser
+- but in production exact same code will work
+- to solve this issue in local environment, add configurations
+  - 1. we'll have to whitelist our domain name using corsOptions ie.
+    - origin
+    - credentials
+  - 2. pass one more config while calling api using axios, ie. { withCredentials: true }
+  - now check devConsole => application => cookies
+
+# Setting up Redux store and 1st redux state slice( userSlice )
+
+Reference 1- https://redux-toolkit.js.org/tutorials/quick-start
+
+- Install 2 libraries
+- npm install @reduxjs/toolkit react-redux
+- 1. Create(configureStore) a Redux Store ( 1 reducer )
+- 2. Provide the Redux Store to React ( given by react-redux )
+- 3. Create(createSlice) a Redux State Slice ( reducers )
+  - name: 'user',
+  - initialState: null,
+  - reducers: { addUser: (state, action) => { return action.payload }, removeUser: (state, action) => { return null } }
+  - whatever addUser is returning will update the state
+- 4. Add Slice Reducers to the Store
+  - we need to import the reducer function from the userSlice and add it to our store. By defining a field inside the reducer parameter, we tell the store to use this slice reducer function to handle all updates to that state.
+- Summary: configureStore => Provider => createSlice => Add sliceReducer to Store
+
+# How to add/save User Data coming from api to Redux Store via userSlice
+
+- 1. we need a hook, useDispatch() ( given by react-redux )
+- 2. we need to dispatch an action using this hook to add data to redux store
+     - const dispatch = useDispatch();
+     - inside handleLogin
+     - dispatch(action), action we have defined in userSlice
+       - ie. dispatch(addUser(res.data))
+- 3. use this hook where login api is being called and user data is coming
+
+# How to read data ( that we've saved in last step ) from the store & show on NavBar
+
+- 1. We need a hook, useSelector() ( given by react-redux )
+- 2. Acess data using userSlice
+  - const user = useSelector((store) => store.user);
+  - then use data inside user in NavBar.js to show user photo or fistsName of user
+
+# Once the user is logged in, after dispatch use this under handleOnlick
+
+- use a hook called useNavigate()
+  - const navigate = useNavigate();
+  - return navigate("/");
+
+# Refactoring
+
+- added constants.js in utils
+- Moved user created components inside components folder
+
+- 1. Just chjecking
+
+2. Just check
+3. Just check

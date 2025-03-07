@@ -212,3 +212,17 @@ S02E14
 
 S02E15
 check readme under devTinder-frontend
+
+LATER
+
+- CORS error happens when your client is at different url and backend is at diff url because of security reasons
+  - frontend: http://localhost:5173
+  - backend: http://localhost:7777
+  - 127.0.0.1 === localhost
+  - localhost is same for both but
+  - but frontend is using different port ie. 5173
+  - and backend is using different port ie. 7777
+- Handling this CORS error at API level in backend, cors is middleware here
+  - install this package in backend app
+  - npm install cors
+  - add this middleware to app.js with configurations(below)

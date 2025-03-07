@@ -3,12 +3,23 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 //importing express.Router()
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+
+// Middleware to handle cors error at API level
+app.use(
+  cors({
+    // this will help us save the cookies storing JWT in browser
+    origin: "http://localhost:5173",
+    // Set to true to pass the header, otherwise it is omitted.
+    credentials: true,
+  })
+);
 
 // Middleware to read JSON & convert it into JS object & adds this JS obj back to req in the body( ie req.body )
 // will work for all the routes
