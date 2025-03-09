@@ -242,7 +242,7 @@ Reference 1- https://redux-toolkit.js.org/tutorials/quick-start
 
 # S02E17
 
-## How to build that feature when you refreshes the page, you're still logged in even though redux store also refreshes
+## How to build that feature when you refreshes the page, you're still logged in even though redux store also refreshes and auto-redirect to login page when user has logout
 
 PROBLEM: synchronous Redux code alone cannot persist login across page refreshes because Redux state is stored in memory and resets when the page reloads.
 
