@@ -241,3 +241,49 @@ Reference 1- https://redux-toolkit.js.org/tutorials/quick-start
 - Moved user created components inside components folder
 
 # S02E17
+
+## How to build that feature when you refreshes the page, you're still logged in even though redux store also refreshes
+
+PROBLEM: synchronous Redux code alone cannot persist login across page refreshes because Redux state is stored in memory and resets when the page reloads.
+
+SOLUTION1:
+Reference: https://chatgpt.com/share/67cc5828-c288-8005-b76c-016140d18051
+
+1. Backend: TOKEN (set JWT in HTTP-Only Cookie)
+2. Frontend: Persist Login Using Redux Toolkit( createAsyncThunk )
+3. Configure Redux Store
+4. Provide Redux Store to React
+5. Implement Login & Auto-Auth in React
+
+SOLUTION2: (used in code)
+NOTE1: comment/remove strict mode in main.jsx to properly test how many times api is being called (because in strict mode it will make two api call just to verify that rendering is working fine or not)
+
+NOTE2: handle error status in backend middlewares/auth.js properly ie.
+return res.status(401).send("Please Login");
+
+1. Akshay has created kind of its own persistent mechanism using TOKEN already present in cookies and using /profile/view. Token set in cookies is present in the browser which akshay is using.
+2. We still have the token in our browser's cookies( devconsole => application)
+3. See root of application is app.jsx and everything is rendering inside Body.jsx
+4. As soon as Body.jsx loads
+   1. I'll check whether the token is present or not.
+   2. If the token is present, get data of the user /profile/view using "fetchUser" function
+   3. Update the redux store using user data ie. const dispatch = useDispatch(); dispatch(addUser(res.data));
+   4. Put fetchUser inside useEffect and pass empty array ie.[] as argument. This tells React that the effect does not depend on any values from the component's props or state, so "it only needs to be run once on initial render" ie. after the component is mount/loads for the first time.
+   5. Now, everytime we refresh the page, Body.jsx component will mount/render for the first time, once that happens useEffect will run [ fetchUser => /profile/view => dispatch(addUser(res.data)) ], means redux state will be updated evertime someone refreshes the page. Which makes logged in persistent
+5. Handling Error: ( There can be 2 types of error 1. UnAuthorised: status code 401 2. Any code related error: console.error(error) )
+   1. User will only logout,
+      1. if the token is not there in the browser cookies
+      2. someone manually removed the token
+      3. token expired
+   2. If logout Happens (any of above 3 condition), and you receive error.status equals to 401 (unauthorised) - YOU SHOULD NOT BE ABLE TO ACCESS OTHER ROUTES WITHOUT LOGIN
+      1. if(error.status === 401) then while catching error redirect user to /login page using useNavigate() hook ie. const navigate = useNavigate(); navigate("/login")
+      2. This ensure without login you can't access any page / or /profile because we have written this logic in body.jsx so as soon as app starts it will check if the token is valid or not
+
+### One issue/bug is coming, Ideally once a user is logged in he doesn't have to make api call again and again while go to profile or home using button on UI /profile How to solve this ?
+
+1. Once we have data in redux store we do not want to make api call again and again
+2. Use <Link to="/profile"></Link> inside Navigate.jsx
+3. Use <Link to="/"></Link> inside Navigate.jsx
+   // ADDITIONAL CHECK
+4. Inside Body.jsx get userData from store using const userData = useSelector((store)=>store.user)
+5. If the userData is already present in the redux store means user is logged in, then don't make api (inside fetchUser) call ie. if(userData) return; ( ie. only make api call when there is not data in the store )

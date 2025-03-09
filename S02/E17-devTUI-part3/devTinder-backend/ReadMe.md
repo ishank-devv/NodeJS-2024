@@ -213,7 +213,7 @@ S02E14
 S02E15
 check readme under devTinder-frontend
 
-LATER
+## LATER modified backend due to CORS issue
 
 - CORS error happens when your client is at different url and backend is at diff url because of security reasons
   - frontend: http://localhost:5173
@@ -226,3 +226,7 @@ LATER
   - install this package in backend app
   - npm install cors
   - add this middleware to app.js with configurations(below)
+
+## handle error status in backend middlewares/auth.js properly ie.
+
+return res.status(401).send("Please Login!");
