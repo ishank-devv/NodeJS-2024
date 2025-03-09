@@ -287,3 +287,16 @@ return res.status(401).send("Please Login");
    // ADDITIONAL CHECK
 4. Inside Body.jsx get userData from store using const userData = useSelector((store)=>store.user)
 5. If the userData is already present in the redux store means user is logged in, then don't make api (inside fetchUser) call ie. if(userData) return; ( ie. only make api call when there is not data in the store )
+
+## Logout functionality
+
+1. Create a handleLogout function for onClick for logout button inside NavBar.jsx
+2. call /logout backend api
+3. remove user from redux store using dispatch
+4. navigate to /login page once it happens
+
+## Handling Simple Validation/error messages inside Login.jsx
+
+1. create a state variable "error" & initialised with ""
+2. Inside catch block use response backend is sending, setError(err?.response?.data)
+3. create <p className="text-red-500">{error}</p> above Login button
