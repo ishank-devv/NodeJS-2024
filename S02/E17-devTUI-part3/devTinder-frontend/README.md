@@ -300,3 +300,16 @@ return res.status(401).send("Please Login");
 1. create a state variable "error" & initialised with ""
 2. Inside catch block use response backend is sending, setError(err?.response?.data)
 3. create <p className="text-red-500">{error}</p> above Login button
+
+## Building Feed
+
+1. Create a getFeed function inside Feed.jsx
+   1. call /feed using axios.get, you will get response
+   2. For Saving that response inside redux store first we nee to
+      1. create feedSlice.js using createSlice
+      2. add feed: feedReducer in appStore.js
+   3. useDispatch for adding the feed response/data(res.data) which we got in step 1
+   4. useSelector for reading data from redux store
+      1. If feed is already present then no need to call the feed api ie if(feed) return
+2. Create a UserCard.jsx and render it inside return of Feed.jsx
+   1. first create UserCard for 1 user ie. <UserCard user={feed[0]} />
