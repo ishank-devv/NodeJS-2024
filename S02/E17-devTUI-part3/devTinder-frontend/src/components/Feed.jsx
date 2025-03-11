@@ -29,10 +29,10 @@ const Feed = () => {
   }, []);
 
   return (
-    // intially feed is empty & userEffect runs after 1st mount/render then its gets data
+    // intially feed is empty & userEffect runs after 1st mount/render then its gets data so feed data can be null( which will become feed's user data in user card )
     feed && (
       <div className="flex justify-center my-10">
-        <UserCard user={feed[0]} />
+        <UserCard user={feed[1]} />
       </div>
     )
   );

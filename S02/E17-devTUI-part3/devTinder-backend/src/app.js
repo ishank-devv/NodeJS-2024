@@ -16,6 +16,7 @@ app.use(
   cors({
     // this will help us save the cookies storing JWT in browser
     origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     // Set to true to pass the header, otherwise it is omitted.
     credentials: true,
   })

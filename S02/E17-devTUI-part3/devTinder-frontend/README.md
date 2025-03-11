@@ -313,3 +313,32 @@ return res.status(401).send("Please Login");
       1. If feed is already present then no need to call the feed api ie if(feed) return
 2. Create a UserCard.jsx and render it inside return of Feed.jsx
    1. first create UserCard for 1 user ie. <UserCard user={feed[0]} />
+
+### Creating Profile and edit Profile functionality
+
+- This should show Logged in User Profile
+- And this should also be able to edit the profile - create a new component for EditProfile
+
+1. Create a EditUser.jsx profile where form will be similar to login form
+   1. EditUser.jsx is being populated by data from feed.jsx's user card
+2. get logged-in user data using selector: const user = useSelector((store) => store.user); inside Profile.jsx and pass on as a prop <EditProfile user={user} />
+   1. Use that data to populate edit profile data fields
+   2. Now use data(logged in user) again to pass on as prop for <UserCard user={{ firstName, lastName, photoUrl, age, gender, about }} /> NOTE: earlier we were using UserCard to show data from feed's user
+3. Create a saveProfile function which will call "patch" api /profile/edit to update and save the profile
+4. Since store should have updated info of user. Once api call is successful, save user data in redux store with updated data using useDispatch()
+5. Add saveProfile to button(save profile) onClick()
+6. handle error
+   1. setError(err?.response?.data || "something went wrong");
+   2. Error will stick to UI even when you enter right info and click save profile, profile got saved but old error is still sticking to the the screen. So before saving the profile, clear existing errors. ie setError("");
+7. Handle Notification
+   1. Get toast center from daisy ui
+   2. create a state variable const [showToast, setShowToast] = useState(false);
+   3. After the dispatch of data, we can setShowToast(true);
+   4. {showToast && ( Toast UI ) }
+   5. Also clear notification( ie. setShowToast(false); ) using setTimeout after 3 or 5 sec
+
+Homework TODO-
+
+1. gender should be a drop down
+2. Show some pop up Toast notification when the data is saved- done
+3. Replace input with text area for about- done
