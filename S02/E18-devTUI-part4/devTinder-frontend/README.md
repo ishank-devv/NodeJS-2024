@@ -344,3 +344,46 @@ return res.status(401).send("Please Login");
 3. Replace input with text area for about- done
 
 # S02E18
+
+## Building where user can see who are user's existing connections. API called /user/connections
+
+1. Create a new file Connections.jsx under components
+2. Add /connections route under Routes, BrowserRouter and add Connections.jsx as element
+3. Go to NavBar.jsx and add Link for /connections
+
+   ### Connections.jsx
+
+   1. Create a function fetchConnections which will fetch the data using axios.get & API is /user/connections
+   2. using useEffect to call fetchConnections
+   3. Write the HTML + REACT to show the connections
+   4. Create a connectionsSlice to store data in redux store
+   5. Add connectionReducer to the appStore
+   6. useDispatch() for adding/saving data to the store eg: dispatch(addConnections(res.data.data)); Now you can see connections in your redux store
+   7. useSelector((store)=> store.connections) to show data/connections on UI
+   8. if (!connections) return; if (connections.length === 0) return <h1>No Connections Found</h1>;
+   9. Nested Return is possible. Destructure for each connection.ie. return( <div>{connections.map((connection) => {
+   //destructuring for each connection
+   const { firstName, lastName, photoUrl, age, gender, about } = connection;
+   return (<>{firstname}</>); })}
+     </div>
+   );
+
+## Building where user can see what connection requests user has received. API called /user/requests/received
+
+1. create a Requests.jsx under components
+2. Add /requests route under Routes, BrowserRouter and add Requests.jsx as element
+3. Go to NavBar.jsx and add Link for /requests
+   ### Requests.jsx
+   1. create fetchRequests function and call axios.get api:/user/requests/received
+   2. call fetchRequests using useEffect once
+   3. Create requestSlice.js and add it to appStore.js
+   4. save/add data to redux store using useDispatch
+   5. Add requestReducer to the appStore
+   6. useDispatch() for adding/saving data to the store eg: dispatch(addRequests(res.data.data)); Now you can see connections in your redux store
+   7. useSelector((store)=> store.requests) to show data/requests on UI
+   8. if (!requests) return; if (requests.length === 0) return <h1>No Requests Found</h1>;
+   9. Nested Return is possible. Destructure for each request.fromUserId.ie. return( <div>{requests.map((request) => {
+      //destructuring for each connection
+      const { firstName, lastName, photoUrl, age, gender, about } = request.fromUserId;
+      return (<>{firstname}</>); })}
+   10. Add primary & secondary buttons ffrom Daisy UI to accept or reject the connection request
