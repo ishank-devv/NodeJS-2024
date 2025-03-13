@@ -387,3 +387,51 @@ return res.status(401).send("Please Login");
       const { firstName, lastName, photoUrl, age, gender, about } = request.fromUserId;
       return (<>{firstname}</>); })}
    10. Add primary & secondary buttons ffrom Daisy UI to accept or reject the connection request
+
+Self Homework TODO-
+
+- try to implement once the user is logged in, and user makes every possible api request, find out way to cache those requests
+
+## Writing logic for accepting/rejecting the connection request(right swipe/left swipe)- requests which have been sent by other users( Requests.jsx )
+
+API- /request/review/:status/:requestId
+
+status would be either accepted or rejected
+
+- /request/review/accepted/6793b6a2ec6ad29497451cfd
+- /request/review/rejected/6793b6a2ec6ad29497451cfd
+
+1. create a function reviewRequest where you call this api based on (status, \_id)
+2. call api "/request/review/" + status + "/" + \_id
+3. keep 2nd paramter empty: {},
+4. connect it to buttons onClick={() => reviewRequests("rejected", request.\_id)} & onClick={() => reviewRequests("accepted", request.\_id)}
+5. User has two options: accept or reject that request
+6. Once User accept or reject that request, card should be removed from UI( means we have to remove request from requestSlice/redux store)
+7. useDispatch an action to remove that request instantly as soon as user clicks on accepted or rejected. pass \_id. eg: dispatch(removeRequest(\_id));
+
+### One Issue i was facing implementing removerequest in requestSlice.js
+
+- Reference: https://chatgpt.com/share/67d29e34-a430-8005-acc3-3242959a485a
+
+1. The issue is with your removeRequest reducer function. Specifically, the filter method is not returning the expected result because you’re using {} inside the filter callback but not returning anything explicitly.
+2. Fix the removeRequest reducer
+   1. Incorrect code:
+      1. const newArray = state.filter((request) => {
+         request.\_id !== action.payload;
+         });
+      2. Here, the function inside .filter() is using {} without a return statement, so it’s implicitly returning undefined for each element.
+      3. As a result, newArray is undefined, causing Redux to not update the state correctly.
+   2. Fixed Code:
+      1. const newArray = state.filter((request) => request.\_id !== action.payload);
+      2. Now, .filter() correctly returns a new array excluding the request with the given \_id.
+      3. Final Updated removeRequest Function
+         1. removeRequest: (state, action) => {
+            return state.filter((request) => request.\_id !== action.payload);
+            },
+         - OR
+         2. removeRequest: (state, action) => {
+            const newArray = state.filter(
+            (request) => request.\_id !== action.payload
+            );
+            return newArray;
+            },
