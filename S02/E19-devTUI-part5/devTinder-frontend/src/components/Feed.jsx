@@ -28,11 +28,19 @@ const Feed = () => {
     getfeed();
   }, []);
 
+  if (!feed) return;
+
+  // NO more users are ther on feed for particular logged-in user,
+  // either logged-in user swiped right or left
+  // Even if it is only one user then feed.length === 1
+  if (feed.length <= 0)
+    return <h1 className="flex justify-center my-10">No new users found!</h1>;
+
   return (
     // intially feed is empty & userEffect runs after 1st mount/render then its gets data so feed data can be null( which will become feed's user data in user card )
     feed && (
       <div className="flex justify-center my-10">
-        <UserCard user={feed[1]} />
+        <UserCard user={feed[0]} />
       </div>
     )
   );

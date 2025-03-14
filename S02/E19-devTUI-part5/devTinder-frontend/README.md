@@ -392,9 +392,9 @@ Self Homework TODO-
 
 - try to implement once the user is logged in, and user makes every possible api request, find out way to cache those requests
 
-## Writing logic for accepting/rejecting the connection request(right swipe/left swipe)- requests which have been sent by other users( Requests.jsx )
+## Writing logic for Logged-in User for accepting/rejecting the connection request(done to logged-in user either right swipe/left swipe by other users on their feed)- requests which have been sent by other users( Requests.jsx )
 
-API- /request/review/:status/:requestId
+API- /request/review/:status/:requestId (2ND SWIPE RIGHT/LEFT)
 
 status would be either accepted or rejected
 
@@ -405,7 +405,7 @@ status would be either accepted or rejected
 2. call api "/request/review/" + status + "/" + \_id
 3. keep 2nd paramter empty: {},
 4. connect it to buttons onClick={() => reviewRequests("rejected", request.\_id)} & onClick={() => reviewRequests("accepted", request.\_id)}
-5. User has two options: accept or reject that request
+5. User has two options: accept or reject that request (2nd swipe)
 6. Once User accept or reject that request, card should be removed from UI( means we have to remove request from requestSlice/redux store)
 7. useDispatch an action to remove that request instantly as soon as user clicks on accepted or rejected. pass \_id. eg: dispatch(removeRequest(\_id));
 
@@ -435,3 +435,30 @@ status would be either accepted or rejected
             );
             return newArray;
             },
+
+# S02E19
+
+## Writing logic where logged-in User can be interested or can ignored other Users on the feed (1st Swipe Right/Left)
+
+Once the user swipe right/left or interested/ignore any other user coming to his feed, the card should disappear and replace with new card from feed( array of objects). For example, if fee in redux store has 4 card's data, then after doing this operation it will remain 3.
+
+API- /request/send/:status/:toUserId (1ST SWIPE RIGHT/LEFT)
+
+status would be either interested or ignored
+
+- /request/send/interested/6788a20f865156d4ba67fa7a
+- /request/send/ignored/6788a20f865156d4ba67fa7a
+
+1. feed => UserCard.jsx
+2. create a function handleSendRequest where you call this api based on (status, userId)
+3. call api "/request/send/" + status + "/" + userId
+4. keep 2nd paramter empty: {},
+5. connect it to buttons onClick={() => handleSendRequest("ignored", request.userId)} & onClick={() => reviewRequests("interested", request.userId)}
+6. User has two options: interested or ignored ( 1st swipe)
+7. Once Logged-in User swipe interested or ignored other user on feed, card should be removed from UI( means we have to remove othe user from feedSlice/redux store )
+
+### Implementing removeUser in feedSlice.js( similar to removeRequest in requestSlice.js)
+
+1. dont't return null in removeUserFromFeed, it will empty the whole feed
+2. only remove that particular other user on the feed by using filter method
+3. dispatch(removeUserFromFeed(userId));
