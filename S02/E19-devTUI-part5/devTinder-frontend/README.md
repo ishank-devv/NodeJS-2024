@@ -462,3 +462,73 @@ status would be either interested or ignored
 1. dont't return null in removeUserFromFeed, it will empty the whole feed
 2. only remove that particular other user on the feed by using filter method
 3. dispatch(removeUserFromFeed(userId));
+
+## Implementing SIGN UP for new user
+
+1stWay- to create the seperate route /signup & create Signup.jsx component
+2ndWay(Tricky)- to use the same login component and use it for SIGN up also
+
+### SIGN UP using 2nd way
+
+1. Create two more state variables for SIGN UP form ie. firstName and lastName
+2. Create two more field for UI
+3. Create a Switch for a toggle, so that the same form turns into SIGN UP or LOGIN on a click
+   1. Create state variable isLoginForm with default value true( first login form will apear by default)
+   2. Create a Dynamic TITLE based on state variable {isLoginForm ? "Login" : "SignUp"}
+   3. Hide firstName and lastname when isLoginForm = true ie. {!isLoginForm && (<></>)}
+   4. Create Dynamic Login/Sinup button based on isLoginForm state variable ie. {isLoginForm ? "Login" : "Sign Up"}
+      1. make onClick also DYNAMIC ie. onClick={isLoginForm ? handleLogin : handleSignUp}
+   5. Create Dynamic <p> where based on isLoginForm you can toggle between Sinup and Login
+
+#### It Automatically logged-in the user upon signup
+
+4. Modify backend Signup API( right now, it doesn't response back the savedUser details like /login so we have to modify that... we need savedUser details in cookies so on frontend we can access token in cookies and save it to redux store so that when user clicks Signup then it automatically logged-in)
+
+   1. save the user in a variable: const saveUser = await user.save();
+   2. send response back with data: res.json({ message: "User Added successfully!", data: saveUser });
+   3. Create the token with user details we saved: const token = await saveUser.getJWT();
+   4. Add JWT token to cookie:res.cookie("token", token, {
+      // cookie will expire in 7 x 24 = 7 days
+      expires: new Date(Date.now() + 7 x 24 x 3600000),
+      httpOnly: true,
+      });
+   5. Test the changes in postman first before frontend
+
+5. Create a handleSignUp which will call /signup api using axios
+   1. call api: Baseurl + /signup
+   2. dispatch dispatch(addUser(res.data.data)); to save profile in redux store & auto logged-in user
+   3. navigate("/profile") so that user can edit the profile and
+
+### Once Signup is implemented, while testing i was facing one error:
+
+Error:
+A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://react.dev/link/controlled-components Error Component Stack
+
+Scenario:
+once user is logged-in and redirected to /profile page to edit the profile. As soon as User writes age, error is coming
+
+1. User needs 4 field to sign up: firstName, lastName, emailId, password
+2. once user is logged-in and redirected to /profile page to edit the profile.
+   1. user will be seeing: firstName(we have data due to signup), lastName(we have data due to signup), photoUrl(setup by default in backend), about(setup by default in backend)
+   2. The issue is coming for age, gender field, they are neither handled in backend nor in the fronend which is causing this error.
+   3. Before the fix: If you go to EditProfile you can see age, gender values are being expected in user(which is not there at all, basically values are null )
+      1. const [age, setAge] = useState(user.age);
+      2. const [gender, setGender] = useState(user.gender);
+   4. FIX:
+      1. const [age, setAge] = useState(user.age || "" );
+      2. const [gender, setGender] = useState(user.gender || "" );
+
+# Refactoring:
+
+- change type = "password" in Login.jsx
+
+# HomeWork TODO:
+
+1.  map right swipe and left swipe to interested and ignored button using css maybe ?
+2.  Optimize for mobile phones, as its not for now
+
+# Bug Fix - ToDO
+
+1. there is a bug, sometimes new user able to see his own profile but we actually handled in the backend at api level. so why its coming ?
+2. Up on refreshing the page, the card went away
+3. Maybe the issue is with redux store, just check

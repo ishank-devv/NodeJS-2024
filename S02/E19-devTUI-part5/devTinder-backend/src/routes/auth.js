@@ -33,8 +33,19 @@ authRouter.post("/signup", async (req, res) => {
     });
 
     // this will save data in users collection on DB, this funct returns you a promise( most mongoose functions does)
-    await user.save();
-    res.send("User Added successfully!");
+    const saveUser = await user.save();
+
+    //Create the token with user details we saved
+    const token = await saveUser.getJWT();
+
+    // Adding JWT token to the cookie
+    res.cookie("token", token, {
+      // cookie will expire in 7 * 24 = 7 days
+      expires: new Date(Date.now() + 7 * 24 * 3600000),
+      httpOnly: true,
+    });
+
+    res.json({ message: "User Added successfully!", data: saveUser });
   } catch (err) {
     res.status(400).send("Error saving the user:" + err.message);
   }
@@ -80,7 +91,8 @@ authRouter.post("/login", async (req, res) => {
         httpOnly: true,
       });
       // res.send("Login Successful! ");
-      res.send(user);
+      // res.send(user);
+      res.json({ message: "User Added successfully!", data: user });
     } else {
       throw new Error("Password is not correct!");
     }

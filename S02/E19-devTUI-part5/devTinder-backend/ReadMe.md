@@ -230,3 +230,10 @@ check readme under devTinder-frontend
 ## handle error status in backend middlewares/auth.js properly ie.
 
 return res.status(401).send("Please Login!");
+
+## BACKEND Modifying /signup in auth.js in S02E19
+
+1. Modify backend Signup API( right now, it doesn't response back the savedUser details like /login so we have to modify that... we need savedUser details in cookies so on frontend we can access token in cookies and save it to redux store so that when user clicks Signup then it automatically logged-in)
+
+2. small change in /login: changing // res.send(user); to
+   res.json({ message: "User Added successfully!", data: user });
